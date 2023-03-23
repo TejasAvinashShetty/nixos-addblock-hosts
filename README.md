@@ -1,9 +1,11 @@
 # nixos-addblock-hosts
 A nixos configuration file that you can import from configuration.nix to block common ad/tracker hosts
 
-Download <code>hosts.nix</code> to <code>/etc/nixos/hosts.nix</code> and add it as import to your <code>/etc/nixos/configuration.nix</code> like this (example):
+Option 1
 
-<pre>
+Download <code>tejas-hosts.nix</code> to <code>/etc/nixos/tejas-hosts.nix</code> and add it as import to your <code>/etc/nixos/configuration.nix</code> like this (example):
+
+```nix
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
@@ -14,11 +16,23 @@ Download <code>hosts.nix</code> to <code>/etc/nixos/hosts.nix</code> and add it 
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      ./hosts.nix
+      ./tejas-hosts.nix
     ];
 
-...
-</pre>
+```
+
+Option 2
+Inspired from Steve Black says in his repo add the following line to your configuration.nix
+
+```nix
+{
+  networking.extraHosts = let
+    hostsPath = https://raw.githubusercontent.com/tejasjyothishetty/nixos-addblock-hosts/master/hosts;
+    hostsFile = builtins.fetchurl hostsPath;
+  in builtins.readFile "${hostsFile}";
+}
+```
+
 
 Also note this comment from the top of the original <code>hosts</code> file:
 
@@ -29,4 +43,7 @@ Also note this comment from the top of the original <code>hosts</code> file:
 # as long the original URL and attribution is included. 
 </pre>
 
+#### waste
+https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts;
 
+https://github.com/tejasjyothishetty/nixos-addblock-hosts/blob/master/tejas-hosts.nix
